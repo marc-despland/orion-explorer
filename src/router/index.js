@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import OrionTypes from '../views/OrionTypes.vue'
+import OrionEntities from '../views/OrionEntities.vue'
 
 Vue.use(VueRouter)
 
@@ -15,7 +16,13 @@ const routes = [
     path: '/types',
     name: 'types',
     component: OrionTypes
-  },  {
+  },
+  {
+    path: '/entities',
+    name: 'entities',
+    component: OrionEntities
+  },
+  {
     path: '/about',
     name: 'about',
     // route level code-splitting
