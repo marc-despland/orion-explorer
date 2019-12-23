@@ -14,7 +14,20 @@
           <div class="modal-body">
               <div class="inner-body">
             <slot name="body">
-              <pre class="json">{{ ngsiFormated }}</pre>
+                <table class="table table-striped tableType">
+                    <thead>
+                        <tr>
+                        <th>Atrribute</th>
+                        <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(value, name) in attributes" :key="name" >
+                        <td>{{ name }}</td>
+                        <td>{{ formatType(value.types)}}</td>
+                      </tr>
+                    </tbody>
+                </table>
             </slot>
             </div>
           </div>
@@ -44,16 +57,19 @@ export default {
       ngsi:{}
   }},
   mounted () {
-    var i=0;
-    while (i<this.types.length && this.types[i].type!=this.type) i++;
-    if (i<this.types.length) this.ngsi=this.types[i];
-    console.log("NGSI="+this.ngsi);
+
   },
   methods: {
+      formatType: function(types) {
+        var value=types[0];
+        for (var i=1; i<types.length;i++) value+=", "+types[i];
+        return value;
+      }
  
   },
   watch: { 
         type: function(newVal, oldVal) { // watch 
+            console.log("New type "+newVal+" "+oldVal);
             if (newVal!=oldVal) {
                 var i=0;
                 while (i<this.types.length && this.types[i].type!=this.type) i++;
@@ -66,6 +82,11 @@ export default {
             
             console.log(JSON.stringify(this.ngsi, null, 4))
             return JSON.stringify(this.ngsi, null, 4);
+        },
+        attributes: function() {
+          console.log("ngsi = "+JSON.stringify(this.ngsi));
+          console.log("attrs = "+JSON.stringify(this.ngsi.attrs));
+          return this.ngsi.attrs;
         },
         ...mapState(['types'])
   }
@@ -92,7 +113,9 @@ export default {
 }
 
 .modal-container {
-  width: 300px;
+  max-width: 400px;
+  min-width: 200px;
+  width:80%;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -101,7 +124,9 @@ export default {
   transition: all .3s ease;
   font-family: Helvetica, Arial, sans-serif;
 }
-
+.tableType {
+    width: 90%;
+}
 .modal-header h3 {
   margin-top: 0;
   color: #42b983;

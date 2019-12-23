@@ -1,6 +1,6 @@
 <template>
   <div class="orionEntities">
-      <ShowEntity :show="showEntity" @close="showEntity=false;" :entity="selectedEntity"/>
+      <ShowEntity :show="showEntity" @close="showEntity=false;" :entityid="selectedEntity"/>
     <table class="table table-striped">
         <tr>
             <td>Limit : </td>

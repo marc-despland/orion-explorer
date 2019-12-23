@@ -7,14 +7,31 @@
 
           <div class="modal-header">
             <slot name="header">
-              {{entity}}
+              {{entityid}}
             </slot>
           </div>
 
           <div class="modal-body">
               <div class="inner-body">
             <slot name="body">
-              <pre class="json">{{ ngsiFormated }}</pre>
+                <table class="table table-striped tableEntity">
+                    <thead>
+                        <tr>
+                        <th>Atrribute</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(value, name) in entity" :key="name" >
+                        <td>{{ name }}</td>
+                        <td v-if="value.type!==undefined">{{ value.type }}</td>
+                        <td v-if="value.type!==undefined && typeof value.value ==='object'"><pre>{{ format(value.value) }}</pre></td>
+                        <td v-if="value.type!==undefined && typeof value.value !=='object'">{{ value.value }}</td>
+                        <td v-if="value.type===undefined" colspan="2">{{ value }}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </slot>
             </div>
           </div>
@@ -39,25 +56,29 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'ShowEntity',
-  props: ['show', 'entity'],
+  props: ['show', 'entityid'],
   data() { return {
-      ngsi:{}
+      ngsi:{},
+      entity: {}
   }},
   mounted () {
-    var i=0;
-    while (i<this.entities.length && this.entities[i].id!=this.entity) i++;
-    if (i<this.entities.length) this.ngsi=this.entities[i];
-    console.log("NGSI="+this.ngsi);
+
   },
   methods: {
+      format: function(value){
+          return JSON.stringify(value, null, 4);
+      }
  
   },
   watch: { 
-        entity: function(newVal, oldVal) { // watch 
+        entityid: function(newVal, oldVal) { // watch 
             if (newVal!=oldVal) {
                 var i=0;
-                while (i<this.entities.length && this.entities[i].id!=this.entity) i++;
-                if (i<this.entities.length) this.ngsi=this.entities[i];
+                while (i<this.entities.length && this.entities[i].id!=this.entityid) i++;
+                if (i<this.entities.length) {
+                    this.ngsi=this.entities[i];
+                    this.entity=this.entities[i];
+                }
             }
         }
     },
@@ -92,7 +113,7 @@ export default {
 }
 
 .modal-container {
-  width: 500px;
+  width: 80%;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -107,12 +128,15 @@ export default {
   color: #42b983;
 }
 
+.tableEntity {
+    width: 90%;
+}
 .modal-body {
   margin: 20px 0;
   overflow: hidden;
 }
 .inner-body {
-  max-height: 300px;
+  max-height: 70%;
   overflow-y: scroll;
   text-align: left;
 }
