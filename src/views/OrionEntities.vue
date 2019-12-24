@@ -1,6 +1,6 @@
 <template>
   <div class="orionEntities">
-      <ShowEntity :show="showEntity" @close="showEntity=false;" :entityid="selectedEntity"/>
+      <ShowEntity :show="showEntity" @close="close()" :entityid="selectedEntity"/>
     <table class="table table-striped">
         <tr>
             <td>Limit : </td>
@@ -80,6 +80,10 @@ export default {
               query: this.query
           };
           this.$store.dispatch('loadEntities',query)
+      },
+      close: function(){
+        this.showEntity=false;
+        this.selectedEntity="";
       }
   }
 }

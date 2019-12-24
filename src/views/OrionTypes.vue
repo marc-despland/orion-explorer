@@ -1,6 +1,7 @@
 <template>
   <div class="orionTypes">
-      <ShowType :show="showType" @close="showType=false;" :type="selectedType"/>
+      <ShowType :show="showType" @close="close()" :type="selectedType"/>
+      <div><button @click="refresh()">Refresh</button></div>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -45,6 +46,13 @@ export default {
           this.showType=true;
           this.selectedType=type;
           await this.$nextTick();
+      },
+      refresh: function() {
+        this.$store.dispatch('loadTypes')
+      },
+      close: function() {
+        this.showType=false;
+        this.selectedType="";
       }
   }
 }

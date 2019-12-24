@@ -70,7 +70,7 @@ export default {
   watch: { 
         type: function(newVal, oldVal) { // watch 
             console.log("New type "+newVal+" "+oldVal);
-            if (newVal!=oldVal) {
+            if ((newVal!=oldVal) && (newVal!="")) {
                 var i=0;
                 while (i<this.types.length && this.types[i].type!=this.type) i++;
                 if (i<this.types.length) this.ngsi=this.types[i];

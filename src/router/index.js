@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import OrionTypes from '../views/OrionTypes.vue'
 import OrionEntities from '../views/OrionEntities.vue'
+import OrionSubscriptions from '../views/OrionSubscriptions.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/entities',
     name: 'entities',
     component: OrionEntities
+  },
+  {
+    path: '/subscriptions',
+    name: 'subscriptions',
+    component: OrionSubscriptions
   },
   {
     path: '/about',

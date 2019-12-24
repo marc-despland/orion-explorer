@@ -72,7 +72,7 @@ export default {
   },
   watch: { 
         entityid: function(newVal, oldVal) { // watch 
-            if (newVal!=oldVal) {
+            if((newVal!=oldVal) && (newVal!=""))  {
                 var i=0;
                 while (i<this.entities.length && this.entities[i].id!=this.entityid) i++;
                 if (i<this.entities.length) {

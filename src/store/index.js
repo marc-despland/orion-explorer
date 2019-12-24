@@ -12,7 +12,8 @@ export default new Vuex.Store({
     fiwareService:"PIXEL",
     fiwareServicePath:"/FRBOD",
     types: [],
-    entities: []
+    entities: [],
+    subscriptions: []
 
   },
   mutations: {
@@ -21,6 +22,9 @@ export default new Vuex.Store({
     },
     SET_ORION_ENTITIES (state, entities) {
       state.entities = entities
+    },
+    SET_ORION_SUBSCRIPTIONS (state, subscriptions) {
+      state.subscriptions = subscriptions
     }
   },
   actions: {
@@ -40,6 +44,24 @@ export default new Vuex.Store({
         .then(r => r.data)
         .then(types => {
         commit('SET_ORION_TYPES', types)
+        })
+    },
+    loadSubscriptions ({ commit, state }) {
+      var request={
+        method: 'GET',
+        url: state.orion+"/v2/subscriptions",
+        headers: {},
+        json: true
+    };
+    
+    if (state.fiwareService!="") request.headers["Fiware-Service"]=state.fiwareService;
+    if (state.fiwareServicePath!="") request.headers["Fiware-ServicePath"]=state.fiwareServicePath;
+    console.log(JSON.stringify(request));
+      axios
+        .request(request)
+        .then(r => r.data)
+        .then(subscriptions => {
+        commit('SET_ORION_SUBSCRIPTIONS', subscriptions)
         })
     },
     test({ state}, query) {
