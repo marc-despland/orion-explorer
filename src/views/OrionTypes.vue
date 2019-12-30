@@ -42,7 +42,6 @@ export default {
   ]),
   methods : {
       showTheType: async function(type) {
-          console.log("showTheType");
           this.showType=true;
           this.selectedType=type;
           await this.$nextTick();

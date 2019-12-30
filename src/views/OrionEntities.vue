@@ -67,7 +67,6 @@ export default {
   ]),
   methods : {
       showTheEntity: async function(id) {
-          console.log("showTheType");
           this.showEntity=true;
           this.selectedEntity=id;
           await this.$nextTick();

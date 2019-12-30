@@ -85,7 +85,6 @@ export default {
   computed: {
         ngsiFormated : function() {
             
-            console.log(JSON.stringify(this.ngsi, null, 4))
             return JSON.stringify(this.ngsi, null, 4);
         },
         ...mapState(['entities'])

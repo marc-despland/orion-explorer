@@ -69,7 +69,6 @@
 export default {
   computed: {
     signin () {
-      console.log("signin : "+this.$store.getters.isAuthenticated())
       return this.$store.getters.isAuthenticated()
     },
     name () {

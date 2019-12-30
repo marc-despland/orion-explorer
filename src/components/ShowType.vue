@@ -69,7 +69,6 @@ export default {
   },
   watch: { 
         type: function(newVal, oldVal) { // watch 
-            console.log("New type "+newVal+" "+oldVal);
             if ((newVal!=oldVal) && (newVal!="")) {
                 var i=0;
                 while (i<this.types.length && this.types[i].type!=this.type) i++;
@@ -80,12 +79,9 @@ export default {
   computed: {
         ngsiFormated : function() {
             
-            console.log(JSON.stringify(this.ngsi, null, 4))
             return JSON.stringify(this.ngsi, null, 4);
         },
         attributes: function() {
-          console.log("ngsi = "+JSON.stringify(this.ngsi));
-          console.log("attrs = "+JSON.stringify(this.ngsi.attrs));
           return this.ngsi.attrs;
         },
         ...mapState(['types'])

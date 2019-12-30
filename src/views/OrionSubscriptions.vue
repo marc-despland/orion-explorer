@@ -46,7 +46,6 @@ export default {
   ]),
   methods : {
       showTheSubscription: async function(subscription) {
-          console.log("showTheSubscription");
           this.showSubscription=true;
           this.selectedSubscription=subscription;
           await this.$nextTick();

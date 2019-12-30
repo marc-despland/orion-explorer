@@ -77,11 +77,9 @@ export default new Vuex.Store({
           .then(infos => {
             connection.name = infos.username;
             connection.connected = true;
-            console.log("SET_CONNECTED " + JSON.stringify(connection, null, 4))
             commit('SET_CONNECTED', connection)
           })
-          .catch(error => {
-            if (error.response!==undefined) console.log("Error status : "+error.response.status)
+          .catch(() => {
             commit('DISCONNECTED')
           })
       }
@@ -99,7 +97,6 @@ export default new Vuex.Store({
       if (state.connected && state.id.token !== "") request.headers["X-Auth-Token"] = state.id.token;
       if (state.fiwareService != "") request.headers["Fiware-Service"] = state.fiwareService;
       if (state.fiwareServicePath != "") request.headers["Fiware-ServicePath"] = state.fiwareServicePath;
-      console.log(JSON.stringify(request));
       axios
         .request(request)
         .then(r => r.data)
@@ -123,7 +120,6 @@ export default new Vuex.Store({
       if (state.connected && state.id.token !== "") request.headers["X-Auth-Token"] = state.id.token;
       if (state.fiwareService != "") request.headers["Fiware-Service"] = state.fiwareService;
       if (state.fiwareServicePath != "") request.headers["Fiware-ServicePath"] = state.fiwareServicePath;
-      console.log(JSON.stringify(request));
       axios
         .request(request)
         .then(r => r.data)
@@ -138,7 +134,6 @@ export default new Vuex.Store({
     },
     test({ state }, query) {
       state.query_limit = query.limit;
-      console.log("Limit : " + state.query_limit);
     },
     loadEntities({ commit, state }, query) {
       var orionQuery = "&";
@@ -164,7 +159,6 @@ export default new Vuex.Store({
       if (state.connected && state.id.token !== "") request.headers["X-Auth-Token"] = state.id.token;
       if (state.fiwareService != "") request.headers["Fiware-Service"] = state.fiwareService;
       if (state.fiwareServicePath != "") request.headers["Fiware-ServicePath"] = state.fiwareServicePath;
-      console.log(JSON.stringify(request));
       axios
         .request(request)
         .then(r => r.data)

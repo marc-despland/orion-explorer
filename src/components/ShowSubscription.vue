@@ -127,19 +127,15 @@ export default {
     },
     watch: { 
             subscription: function(newVal, oldVal) { // watch 
-                console.log("New type "+newVal+" "+oldVal);
                 if ((newVal!=oldVal) && (newVal!="")) {
                     var i=0;
                     while (i<this.subscriptions.length && this.subscriptions[i].id!=this.subscription) i++;
                     if (i<this.subscriptions.length) this.ngsi=this.subscriptions[i];
                 }
-                console.log(JSON.stringify(this.subscriptions,null,4));
             }
         },
     computed: {
             attributes: function() {
-                console.log("ngsi = "+JSON.stringify(this.ngsi));
-                console.log("attrs = "+JSON.stringify(this.ngsi.attrs));
                 return this.ngsi.attrs;
             },
             ...mapState(['subscriptions'])
