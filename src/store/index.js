@@ -8,6 +8,8 @@ Vue.use(VueAxios, axios)
 
 export default new Vuex.Store({
   state: {
+    client_id: '',
+    oauth_collback: '',
     idurl: process.env.VUE_APP_OAUTH_URL,
     id: {
       token: '',
@@ -20,10 +22,20 @@ export default new Vuex.Store({
     fiwareServicePath: process.env.VUE_APP_ORION_SERVICE_PATH,
     types: [],
     entities: [],
-    subscriptions: []
+    subscriptions: [],
+    loaded: false
 
   },
   mutations: {
+    SET_SETTINGS(state,settings) {
+      state.client_id = settings.VUE_APP_CLIENT_ID;
+      state.oauth_collback = settings.VUE_APP_REDIRECT_URI;
+      state.idurl = settings.VUE_APP_OAUTH_URL;
+      state.orion = settings.VUE_APP_ORION_URL;
+      state.fiwareService= settings.VUE_APP_ORION_SERVICE;
+      state.fiwareServicePath = settings.VUE_APP_ORION_SERVICE_PATH;
+      state.loaded=true;
+    },
     DISCONNECTED(state) {
       state.id.token = "";
       state.id.name = "";
@@ -52,6 +64,20 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    loadSettings( {commit }) {
+      var request = {
+        method: 'GET',
+        url: "settings.json",
+        headers: {},
+        json: true
+      };
+     axios
+        .request(request)
+        .then(r => r.data)
+        .then(settings => {
+          commit('SET_SETTINGS', settings)
+        })
+    },
     signout({ commit }) {
       commit('DISCONNECTED')
     },
@@ -181,6 +207,9 @@ export default new Vuex.Store({
     },
     access_token: (state) => () => {
       return (state.id.token)
+    },
+    loaded: (state) => () => {
+      return (state.loaded)
     }
   },
   modules: {

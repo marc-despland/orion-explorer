@@ -6,7 +6,9 @@
       </b-navbar>
       <b-container fluid>
         <b-row class="my-1">
-          <b-col sm="12"><b-button :href="signin_uri">Sign In</b-button></b-col>
+          <b-col sm="12">
+            <b-button v-if="loaded" :href="signin_uri">Sign In</b-button>
+          </b-col>
         </b-row>
       </b-container>
       <!--<a v-bind:href="signin_uri">signin</a>-->
@@ -26,26 +28,23 @@
           </b-navbar-nav>
 
           <b-navbar-nav class="ml-auto">
-
             <b-nav-item-dropdown right>
-
               <template v-slot:button-content>
                 <em>{{ name }}</em>
               </template>
               <b-dropdown-item @click="signout()">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
-
         </b-collapse>
       </b-navbar>
-      <router-view/>
+      <router-view />
     </div>
   </div>
 </template>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -68,26 +67,44 @@
 <script>
 export default {
   computed: {
-    signin () {
-      return this.$store.getters.isAuthenticated()
+    signin() {
+      return this.$store.getters.isAuthenticated();
     },
-    name () {
-      return this.$store.getters.displayName()
+    name() {
+      return this.$store.getters.displayName();
     },
     signin_uri() {
-      return process.env.VUE_APP_OAUTH_URL+"/oauth2/authorize?response_type=token&client_id="+process.env.VUE_APP_CLIENT_ID+"&state=signin&redirect_uri="+process.env.VUE_APP_REDIRECT_URI;
+      return (
+        process.env.VUE_APP_OAUTH_URL +
+        "/oauth2/authorize?response_type=token&client_id=" +
+        process.env.VUE_APP_CLIENT_ID +
+        "&state=signin&redirect_uri=" +
+        process.env.VUE_APP_REDIRECT_URI
+      );
+    },
+    loaded() {
+      return this.$store.getters.loaded();
+    }
+  },
+  watch: {
+    loaded: function(newVal, oldVal) {
+      if (newVal != oldVal && newVal) {
+        if (
+          this.$route.query.token !== undefined &&
+          !this.$store.getters.isAuthenticated()
+        ) {
+          this.$store.dispatch("receivedOAuthToken", this.$route.query.token);
+        }
+      }
     }
   },
   methods: {
     signout: function() {
-      this.$store.dispatch('signout');
+      this.$store.dispatch("signout");
     }
   },
-  mounted: function () {
-    var token = this.$route.query.token
-    if ((this.$route.query.token !== undefined) && (!this.$store.getters.isAuthenticated())) {
-      this.$store.dispatch('receivedOAuthToken', token)
-    }
+  mounted: function() {
+    this.$store.dispatch("loadSettings");
   }
-}
+};
 </script>

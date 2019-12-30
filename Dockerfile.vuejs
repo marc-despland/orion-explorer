@@ -1,0 +1,4 @@
+FROM node
+WORKDIR /app
+RUN npm install -g @vue/cli
+ENTRYPOINT ["/bin/bash"]
